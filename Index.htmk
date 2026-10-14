@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="te">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>మన ఆటో స్టాండ్</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #eef2f3;
+  margin: 0;
+  padding: 15px;
+}
+.container {
+  max-width: 500px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px #ccc;
+}
+h1 {
+  text-align: center;
+  color: #087443;
+}
+p { text-align: center; }
+input, button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 10px;
+  box-sizing: border-box;
+  font-size: 16px;
+  border-radius: 8px;
+}
+input { border: 1px solid #aaa; }
+button {
+  background: #087443;
+  color: white;
+  border: none;
+}
+.auto {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  background: #e8f5e9;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+}
+.auto span { overflow-wrap: anywhere; }
+.auto button {
+  width: auto;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 10px;
+  background: #c62828;
+  font-size: 13px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🛺 మన ఆటో స్టాండ్</h1>
+  <p>ఆటో క్యూ నిర్వహణ</p>
+
+  <form id="autoForm">
+    <input id="autoNumber"
+      placeholder="ఆటో నంబర్ నమోదు చేయి"
+      required>
+    <button type="submit">+ ఆటోను క్యూలో చేర్చు</button>
+  </form>
+
+  <p id="count">క్యూలో ఆటోలు: 0</p>
+  <div id="queue"></div>
+</div>
+
+<script>
+let autos = [];
+
+const form = document.getElementById("autoForm");
+const input = document.getElementById("autoNumber");
+const queue = document.getElementById("queue");
+const count = document.getElementById("count");
+
+function showQueue() {
+  queue.replaceChildren();
+  count.textContent = "క్యూలో ఆటోలు: " + autos.length;
+
+  autos.forEach((number, index) => {
+    const row = document.createElement("div");
+    row.className = "auto";
+
+    const label = document.createElement("span");
+    label.textContent = (index + 1) + ". " + number;
+
+    const btn = document.createElement("button");
+    btn.textContent = "వెళ్లిపోయింది";
+    btn.type = "button";
+    btn.onclick = function() {
+      autos.splice(index, 1);
+      showQueue();
+    };
+
+    row.append(label, btn);
+    queue.appendChild(row);
+  });
+}
+
+form.onsubmit = function(event) {
+  event.preventDefault();
+  const number = input.value.trim().toUpperCase();
+
+  if (autos.includes(number)) {
+    alert("ఈ ఆటో ఇప్పటికే క్యూలో ఉంది!");
+    return;
+  }
+
+  autos.push(number);
+  input.value = "";
+  showQueue();
+};
+
+showQueue();
+</script>
+</body>
+</html>
